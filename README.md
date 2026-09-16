@@ -158,7 +158,7 @@ python gateway/velaguard_gateway.py `
 
 - 演示流程：[`docs/DEMO_RECORDING_20260916.md`](docs/DEMO_RECORDING_20260916.md)
 - 证据索引：[`docs/DEMO_EVIDENCE_INDEX_20260916.md`](docs/DEMO_EVIDENCE_INDEX_20260916.md)
-- 作品介绍：`docs/VelaGuard_作品介绍_20260916.docx`
+- 作品介绍：`docs/VelaGuard_作品介绍_20260916.docx`（可编辑）/ `docs/VelaGuard_作品介绍_20260916.pdf`（兼容预览）
 - 提交检查：[`docs/SUBMISSION_CHECKLIST_20260916.md`](docs/SUBMISSION_CHECKLIST_20260916.md)
 
 ## 开源与第三方资源

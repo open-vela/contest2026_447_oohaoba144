@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "team_id": "contest2026_447_oohaoba144",
+  "github_login": "oohb144",
+  "generator": "manual-backfill@1.0.0",
+  "updated_at": "2026-09-16T13:47:32Z",
+  "sessions": [
+    {
+      "session_id": "ffb165f4-94fa-4b91-be0e-5afaf277e9af",
+      "tool": "claude-code",
+      "started_at": "2026-09-16T13:35:00Z",
+      "last_event_at": "2026-09-16T13:35:45Z",
+      "event_count": 2,
+      "file_path": "logs/oohb144/2026-09-16/claude-code__ffb165f4-94fa-4b91-be0e-5afaf277e9af.jsonl",
+      "collection_mode": "cli",
+      "model": "claude-opus-5",
+      "tokens_total": 43758,
+      "health": "ok"
+    },
+    {
+      "session_id": "aa80b3df-aefa-43d0-bb6f-0f97cf05551f",
+      "tool": "claude-code",
+      "started_at": "2026-09-16T13:38:00Z",
+      "last_event_at": "2026-09-16T13:38:30Z",
+      "event_count": 2,
+      "file_path": "logs/oohb144/2026-09-16/claude-code__aa80b3df-aefa-43d0-bb6f-0f97cf05551f.jsonl",
+      "collection_mode": "cli",
+      "model": "claude-opus-5",
+      "tokens_total": 44543,
+      "health": "ok"
+    }
+  ]
+}

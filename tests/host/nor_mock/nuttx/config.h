@@ -1,0 +1,7 @@
+#ifndef VG_MOCK_CONFIG_H
+#define VG_MOCK_CONFIG_H
+#define CONFIG_MTD 1
+#define CONFIG_MTD_BYTE_WRITE 1
+#define CONFIG_ARCH_DCACHE 1
+#define VG_NOR_HOST_TEST 1
+#endif

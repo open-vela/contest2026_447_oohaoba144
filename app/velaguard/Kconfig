@@ -1,0 +1,10 @@
+config LVX_USE_DEMO_CONTEST2026_447_VELAGUARD
+	tristate "VelaGuard offline reminder application"
+	default n
+	depends on GRAPHICS_LVGL && FS_LITTLEFS
+	select NETUTILS_CJSON
+	select LV_FONT_SIMSUN_16_CJK
+	help
+		LVGL, UART JSON Lines, TaskStore, NOR/LittleFS and official Agent cron.
+		No automatic formatting. RGB and power-loss durability need hardware
+		verification. Full voice/network LLM Agent is not enabled by this option.

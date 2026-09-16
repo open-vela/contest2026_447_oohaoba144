@@ -1,36 +1,75 @@
-# contest2026_447_oohaoba144
+# VelaGuard 离线主动提醒手表
 
-👋 欢迎参加 **2026 首届 openvela AI 硬件开发者大赛**！
+> 2026 首届 openvela AI 硬件开发者大赛 · 队伍 `contest2026_447_oohaoba144` · AI 硬件产品创新赛道
 
-这是组委会为你的队伍创建的**专属参赛仓库**（本仓为样例/模板，队伍编号 `447`；你看到的将是你自己的 `contest2026_<编号>_<队伍名>`）。比赛期间，你的全部参赛代码、打包产物与 AI Coding 日志都提交到这里。
+## 作品简介
 
-> 本仓既是「代码仓」，又内置了一键拉取整套 openvela 工程的 `repo` 清单（manifest）。你只需跟它打交道，**自始至终只动一个文件夹**。
+VelaGuard 是运行在 Huangshan Pi SF32LB52-DevKit-LCD 上的离线主动提醒助手。它把任务创建、设备端定时、主动弹窗、完成或延后确认、历史记录和掉电持久化组成一条本地闭环。网络、BLE 和云端模型均不是核心提醒链路的前置条件。
 
----
+当前版本提供手表式表盘、圆形应用启动器、守护、任务、记录、设备和关于页面。用户可在设备上创建 60 秒演示提醒；任务到期后，AMOLED 显示全屏提醒，RGB 灯同步提示，用户可以完成或延后 60 秒。完成记录写入板载 NOR，并可在复位后恢复。
 
-## 一、先读这些官方文档
+## 选题方向
 
-**通用（所有赛道必读）：**
+本作品参加 **AI 硬件产品创新** 赛道。项目使用 openvela 的 NuttX 运行环境、LVGL 图形栈、官方 cron 唤醒机制、Skill 枚举及工具注册能力，将自然语言网关和设备端确定性任务执行分开。设备负责可靠执行，PC 网关可选用严格规则解析或 MiMo 解析，但密钥只保留在电脑端。
 
-| 文档                                                                                                                                     | 用途                                           |
-| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| [《大赛总览》](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/contest_overview.md)                        | 赛道、流程、评分、资源，建议先通读             |
-| [《参赛代码提交指南》](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/code_submission_guide.md)           | 仓库获取、提交流程、时间与权限（**以此为准**） |
-| [《AI Coding 日志归集与提交手册》](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/ai_coding_log_guide.md) | 如何导出 AI 对话日志并提交到 `logs/`           |
+## 核心能力
 
-**按你的赛道选读（三选一）：**
+- **离线主动闭环**：创建任务后，无需持续连接电脑或网络即可倒计时、提醒和确认。
+- **两类时间域**：支持绝对 UTC 时间任务及 1 至 86400 秒的相对任务。
+- **可靠持久化**：双槽 TaskStore、CRC、版本迁移和 LittleFS 同步；不会自动格式化 NOR。
+- **防重复操作**：`request_id` 重放、任务状态和 revision 守卫用于拒绝过期确认或延后请求。
+- **设备端交互**：390×450 AMOLED 表盘、六入口启动器、任务页、记录页、设备状态页及全屏提醒。
+- **Agent 接口**：注册 `velaguard_create`、`velaguard_list`、`velaguard_snooze`、`velaguard_ack`、`velaguard_rearm` 五个工具。
+- **可选 PC 网关**：支持中文相对时间解析、保存完整请求和串口重放；MiMo 接入为显式可选项。
 
-| 赛道                  | 教程导航                                                                                                                                                 |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 快应用 / 手表应用创新 | [快应用教程导航](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/quickapp/quickapp_guide_index.md)                         |
-| AI 硬件产品创新       | [AI 硬件赛道教程导航](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/ai_hardware/ai_hardware_guide_index.md)              |
-| 新硬件适配            | [新硬件适配赛道教程导航](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/hardware_porting/hardware_porting_guide_index.md) |
+## 界面与操作
 
----
+1. 启动后默认显示时间、日期、下一提醒圆环、历史记录数和设备健康状态。
+2. 从表盘上滑进入应用启动器。
+3. 选择守护、任务、记录或设备页面；功能页左右滑动切换，下滑返回表盘。
+4. 点击 `Demo` 创建“喝水提醒”60 秒相对任务。
+5. 到期后点击“延后 60 秒”或“完成”。
+6. 在“记录”页面查看完成结果；复位后记录仍可恢复。
 
-## 二、第一步：拉取完整工程
+RTC 无效时，界面会明确显示“时间未同步”和“日期待同步”，不会生成伪造的墙钟时间。相对提醒仍以单调时钟运行；未完成的相对任务跨重启后进入 `NEEDS_RESET`，必须由用户明确重新计时。
 
-用组委会提供的命令一键拉取「openvela 全量源码 + 你的专属仓」：
+## 系统结构
+
+```text
+PC 网关 可选
+  中文规则解析或 MiMo
+          │ JSON Lines 1M baud
+          ▼
+VelaGuard 命令与五工具适配
+          │
+          ▼
+Runtime + TaskStore ── 官方 cron 唤醒
+          │                    │
+          ├── NOR LittleFS     ├── AMOLED LVGL
+          ├── RTC 单调时钟     ├── 触摸与 KEY2
+          └── 状态守卫         └── RGB 提示
+```
+
+TaskStore 是任务状态的唯一事实源。cron 只负责唤醒和对账，UI、串口命令与 Agent 工具均通过同一 Runtime 操作任务。
+
+## 目录结构
+
+- `app/velaguard/`：设备端应用、Skill、工具桥接、存储、时钟、UI 和字体。
+- `gateway/`：PC 端中文命令解析、请求保存和串口传输。
+- `tests/host/`：Core、协议、TaskStore、Runtime、工具、网关、字体和 UI 主机测试。
+- `docs/`：设计说明、协议、真机证据索引、演示步骤和作品介绍。
+- `logs/`：比赛要求的 AI Coding 日志及精选测试记录。
+- `contest2026_447_oohaoba144.xml`：将 `app/velaguard` 映射到 openvela 构建树。
+
+## 构建环境
+
+- 开发板：SF32LB52-DevKit-LCD V1.2
+- 屏幕：390×450 AMOLED
+- 配置：`vendor/sifli/boards/sf32lb52/sf32lb52_devkit_lcd/configs/nsh`
+- 控制环境：Windows 11 + Ubuntu WSL2
+- 串口：CH343，1,000,000 baud，8N1，无流控，DTR/RTS 关闭
+
+拉取比赛工作区：
 
 ```bash
 repo init -u https://github.com/open-vela/contest2026_447_oohaoba144 \
@@ -38,111 +77,90 @@ repo init -u https://github.com/open-vela/contest2026_447_oohaoba144 \
 repo sync -c -j8
 ```
 
-同步后，你的整个仓库位于工作区的 `contest2026_447_oohaoba144/`，openvela 全量源码在外层（`nuttx/`、`apps/`、`packages/`、`vendor/` 等）。
-
----
-
-## 三、第二步：在哪里写代码
-
-**只在自己的仓目录 `contest2026_447_oohaoba144/` 里开发。** 不同作品形态放在对应子目录，manifest 会通过 `<linkfile>` 把它们**软链**到 openvela 编译树该在的位置——你不用手动 copy：
-
-| 作品形态 | 你的代码放这里             | 系统自动映射到                                 |
-| -------- | -------------------------- | ---------------------------------------------- |
-| 应用     | `app/hello_app/`           | `packages/demos/contest2026_447_hello_app`     |
-| 快应用   | `quickapp/hello_quickapp/` | `packages/apps/contest2026_447_hello_quickapp` |
-| 板级适配 | `board/contest_board/`     | `vendor/openvela/boards/contest2026_447_board` |
-
-> 用不到的形态目录可以删掉；新增作品时按同样规则加子目录，并在 `contest2026_447_oohaoba144.xml` 里补一条 `<linkfile>` 映射即可。**生产仓库（packages/nuttx/vendor 等）零改动。**
-
-建议仓库目录约定（便于评委定位）：
-
-```text
-app/ | quickapp/ | board/   # 你的作品代码
-logs/                       # AI Coding 日志（主动导出后提交，格式见 logs/README.md）
-README.md                   # 作品说明（提交前请改成你自己的，见第六节）
-```
-
-> 仓内附带了一个 `.gitignore.example`，给出了**编译产物**等不需要进仓的文件示例。如需启用，`cp .gitignore.example .gitignore` 后按需增删即可。**注意 `logs/` 下最终导出的 AI Coding 日志必须提交，不要忽略。**
->
-> `logs/` 的目录结构与提交格式见 [logs/README.md](logs/README.md)。
-
----
-
-## 四、第三步：编译与运行
-
-编译/运行步骤随作品形态不同而不同，请参考你所在赛道的教程导航：
-
-- 快应用 / 手表应用：[快应用教程导航](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/quickapp/quickapp_guide_index.md)（含模拟器与开发板部署）。
-- AI 硬件产品创新：[AI 硬件赛道教程导航](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/ai_hardware/ai_hardware_guide_index.md)（环境搭建、编译烧录、Skill 开发）。
-- 新硬件适配：[新硬件适配赛道教程导航](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/hardware_porting/hardware_porting_guide_index.md)（BSP 移植、最小 NSH 基线）。
-
-子目录已通过 manifest 中的 `<linkfile>` 软链进 openvela 编译树，因此构建在 openvela 工作区**根目录**（即你这个仓的上一级）进行。openvela 使用 `build.sh` 作为统一入口，接收一个 **board config 路径**作为参数：
+当前验证构建目录由官方 LCD `configs/nsh` 配置生成，并启用 `CONFIG_LVX_USE_DEMO_CONTEST2026_447_VELAGUARD=y`、FT6146 触摸及 PA31 中断。增量构建：
 
 ```bash
-# 进入 openvela 工作区根目录（你的仓的上一级）
-cd ..
-
-# 通用语法：第一个参数是 board config 路径，第二个参数可以是 menuconfig / distclean 等
-./build.sh <board-config-path> [menuconfig|distclean] [-j8]
+cd <openvela-workspace>
+source build/envsetup.sh
+cmake --build cmake_out/velaguard_core_protocol --parallel 8
 ```
 
-> 具体的 board config 路径、目标产物、模拟器/真机部署方式请以你所在赛道的教程导航为准。本仓 `app/` `quickapp/` `board/` 三个示例骨架对应的 Kconfig 选项可通过 `menuconfig` 启用。
+输出：`cmake_out/velaguard_core_protocol/nuttx.bin`。
 
----
+当前实机候选 SHA256 为 `91153ef6c5a7eb326753324439efc2ef66c1bff83af43467fd24c4275db82f5a`，大小 2,669,780 bytes。固件仅写入应用区 `0x12010000`，结束地址 `0x1229BCD4`，低于任务数据区起点 `0x129A0000`。仓库不提交固件二进制。
 
-## 五、第四步：提交作品
+## 主机测试
 
-1. **fork** 你的专属仓 → 开发 → `git commit` 并推送 → 向专属仓发起 **Pull Request**，可**自行 review 并合入**（无需等组委会）。
-2. **AI Coding 日志**：与 AI 工具的对话会自动记录到本机 staging（不会自动上传），需你**主动导出/打包**选定会话到仓内 `logs/` 目录后一并提交。详见[《AI Coding 日志归集与提交手册》](https://github.com/open-vela/docs/blob/dev-ai-contest-2026/zh-cn/contest_2026/ai_coding_log_guide.md)。
-3. 若需改动 **nuttx 等公共仓库**，不在本仓改，而是 fork 对应公共仓、以 PR 提交到 `dev-ai-contest-2026` 分支，由组委会 review 后合入。
+Windows PowerShell 可分别运行：
 
-> ⏰ **提交作品截止：9 月 20 日**。截止后统一收回 push 权限，仍可查看 / clone。
->
-> 获奖后再按要求将作品 PR 至 openvela 上游对应仓库（走标准 PR + CI 流程）。
-
-### 关于 PR 与 CLA
-
-- 本仓所有改动通过 **Pull Request** 合入（分支保护强制，可自行合入自己的 PR）。
-- 首次贡献需在[**官网签署 CLA**](https://openvela.com/#/community/cla)；PR 上会自动跑 `cla/signature` 检查，在官网签署成功后，在 PR 评论 `/check-cla` 复检即可通过。
-
----
-
-## 六、提交前：把本 README 改成你的作品说明
-
-本文件目前是组委会给的**使用说明书**。**作品提交前，请把它替换成你自己作品的说明**，方便评委快速了解你做了什么、怎么跑起来。建议至少包含以下内容：
-
-```markdown
-# <你的作品名>
-
-## 一、作品简介
-<一句话/一段话说明这个作品是什么、解决什么问题、亮点在哪>
-
-## 二、选题方向
-<快应用 / 手表应用创新 ｜ AI 硬件产品创新 ｜ 新硬件适配 ｜ 自定方向，并简述理由>
-
-## 三、目录结构
-<列出你这个仓里各目录/文件的作用，例如：>
-- `app/xxx/`        — <说明>
-- `board/xxx/`      — <说明>
-- `quickapp/xxx/`   — <说明>
-- `logs/`           — AI Coding 日志
-- `docs/` 或其他    — <说明>
-
-## 四、运行方式
-<拉取工程后，如何编译、烧录/部署、运行的完整步骤；最好能让评委照着一步步复现>
-
-## 五、AI Coding 使用说明
-<说明本作品如何借助 AI 辅助开发：
-- 在需求拆解 / 方案设计 / 编码 / 调试 / 文档等环节如何与 AI 协作；
-- AI 对开发效率或质量带来的实际帮助。
-完整对话日志见 logs/ 目录>
+```powershell
+powershell -ExecutionPolicy Bypass -File tests/host/run_host_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_taskstore_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_taskstore_file_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_runtime_timer_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_command_timer_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_tools_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_agent_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_gateway_tests.ps1
+powershell -ExecutionPolicy Bypass -File tests/host/run_ui_logic_tests.ps1
+python tests/host/test_font_cn.py
 ```
 
-> 提示：将会根据「作品本身 + 你的 README 说明 + `logs/` 里的 AI Coding 日志」来理解和评估你的作品，README 写清楚很重要。
+测试覆盖严格 JSON、请求去重、TaskStore 损坏恢复、双时钟任务、旧 revision 拒绝、五工具 schema、串口网关、中文字体和表盘导航。
 
----
+## PC 网关
 
-## 附：仓库命名规范
+离线规则解析示例：
 
-`contest2026_<编号>_<队伍名>` — 编号三位零填充；队名 slug（全小写、英文/拼音、连字符）。例：`contest2026_447_oohaoba144`。
-（仓库由组委会统一创建，**每队仅一个仓**，无需自行命名。）
+```powershell
+python gateway/velaguard_gateway.py `
+  --text "1分钟后提醒我喝水" `
+  --save-request water-request.json
+```
+
+连接设备：
+
+```powershell
+python gateway/velaguard_gateway.py `
+  --port COM7 `
+  --text "1分钟后提醒我喝水" `
+  --save-request water-device-request.json
+```
+
+完整参数和重放约束见 [`gateway/README.md`](gateway/README.md)。
+
+## 已验证结果
+
+- 主机 Core、协议、存储、Runtime、工具、Agent、网关、UI 与字体测试通过。
+- ARM 构建通过；静态 Flash 15.91%，SRAM 38.88%。
+- `sftool --verify` 真机写入通过。
+- 启动后 storage、cron/runtime、RGB、Skill loader 和五工具注册成功。
+- 真实触摸、Demo、到期、延后、再次提醒、完成、KEY2 和历史恢复均已有分项真机证据。
+- 最新表盘固件启动状态为 ready；显示、触摸、存储就绪，app/ui error 均为 0。
+
+证据入口：[`docs/DEMO_EVIDENCE_INDEX_20260916.md`](docs/DEMO_EVIDENCE_INDEX_20260916.md)。
+
+## 已知边界
+
+- 当前作品不声称设备端运行云端大模型；MiMo 仅为 PC 网关可选解析器。
+- 完全断电后 RTC 连续计时未通过。任务数据能够保留，但绝对时间可能需要重新同步。
+- 相对任务跨重启后不会猜测断电期间经过的时间，而是进入 `NEEDS_RESET` 等待用户明确操作。
+- 简单周期提醒和任务取消未纳入本次完赛演示版。
+- LSM6DS3 在当前板上未注册；核心提醒链路不依赖 IMU。
+
+## AI Coding 使用说明
+
+本项目使用 Codex 协助完成需求拆解、接口设计、测试先行实现、边界审查、构建诊断、真机证据整理和文档编写。关键规则、协议、持久化和 UI 修改均先加入主机失败测试，再实现并回归。AI Coding 原始日志按比赛采集器要求放入 `logs/<github_login>/`，不手工修改日志内容。
+
+设备端 Skill 位于 `app/velaguard/src/velaguard_skill.c`，描述五个工具的参数、时间域、revision 守卫和不确定结果处理规则。
+
+## 演示与提交材料
+
+- 演示流程：[`docs/DEMO_RECORDING_20260916.md`](docs/DEMO_RECORDING_20260916.md)
+- 证据索引：[`docs/DEMO_EVIDENCE_INDEX_20260916.md`](docs/DEMO_EVIDENCE_INDEX_20260916.md)
+- 作品介绍：`docs/VelaGuard_作品介绍_20260916.docx`
+- 提交检查：[`docs/SUBMISSION_CHECKLIST_20260916.md`](docs/SUBMISSION_CHECKLIST_20260916.md)
+
+## 开源与第三方资源
+
+项目基于 openvela 及其第三方依赖的原有许可开发。中文字体使用 Noto Sans SC，许可文本保存在 `app/velaguard/fonts/OFL-Noto.txt`。表盘和应用启动器使用 LVGL 基础组件自行实现，没有包含 Apple 商标、界面图片或第三方手表素材。

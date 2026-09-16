@@ -1,0 +1,99 @@
+{
+  "date": "2026-09-14",
+  "state": "build-verified",
+  "board": "SF32LB52-DevKit-LCD",
+  "team_head": "bd7b45c2db3d1467489ab46df77e11200d1e8b70",
+  "uncommitted": true,
+  "artifact": "D:/date/code/openvela/.artifacts/velaguard-offline-0d2e4a03.bin",
+  "size": 1774224,
+  "sha256": "0d2e4a0372348bdd377bae2af4f9e1f7e8fc4d9b3de47e21cb02fa30becd884f",
+  "config_sha256": "210b18f78b86eeeaa9deb3d32da44648e5bd5cb89bf6a74845dc357cc4b3b517",
+  "official_cron_sha256": "016c77854d47b007cd4c7e1d5f23cc7d370410a69857e8aadba6edf1365ec887",
+  "sources": [
+    {
+      "path": "gateway/velaguard_gateway.py",
+      "sha256": "b50545590a9b52dbf12a889a5e7f568eb5d368ca964f30865e2fc964400797a9"
+    },
+    {
+      "path": "gateway/serial_transport.ps1",
+      "sha256": "48064cbbe89b9dcc0d40c6513cd5ea6129a84c1a76f9e90b844fbf5396988b2c"
+    },
+    {
+      "path": "app/velaguard/Kconfig",
+      "sha256": "9a5c8977ec768388debc683a6a72dbe68a6ff3a9e65834884bb13ee52698a5c4"
+    },
+    {
+      "path": "app/velaguard/CMakeLists.txt",
+      "sha256": "22c3f6feb6e2b0f27ebea41c2d6e8dbb5e593ccce0c93d12c450e9da8c7967e1"
+    },
+    {
+      "path": "app/velaguard/Makefile",
+      "sha256": "71c666875bf132b8dc6795303d990ae67ab7737e2e44ec20ca88bd7742961dac"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_store_file.c",
+      "sha256": "965a97e7a34f7cc66f22f6aa00945ab3013cc8cfe5b8c42a6ac89702e3020c91"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_main.c",
+      "sha256": "9f6df2d9acf61e8f72ee0252e3761cf4fe01f95378641fee8177fdc711032656"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_cron.c",
+      "sha256": "0e8d65f6ee2d74aede8ccc7e1d1075f9cd332cd6c76be112d536c91258cd023e"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_store.c",
+      "sha256": "26c3e3b5a22b57849f285bd6f667962dd32ec4a0116ca351ecd8236e25813e71"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_protocol.c",
+      "sha256": "1a92fa3b254e82c3610b0cf5a0aab05701a2ccefd82b972a53a8d3d6da314e73"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_runtime.c",
+      "sha256": "abddb2b4e2b50029d3cc4d67ef2e64d512e37da1bbcabc5a76edabb200d92e9d"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_core.c",
+      "sha256": "db90e6380a108f12d775bc16ab07bbe60c6ec30314fb0925f4d4c281bfcb9884"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_skill.c",
+      "sha256": "a42a158da949273498f032bbf5672da301c8ee9ecf05bde4bae6852ed8b04073"
+    },
+    {
+      "path": "app/velaguard/src/velaguard_commands.c",
+      "sha256": "ef315c211113d256e372a951f32174feb723ed47208c51854503ee2cb12439b1"
+    },
+    {
+      "path": "app/velaguard/include/velaguard_platform.h",
+      "sha256": "b1867a0b2b67e831d4e766be7e40e2cf6959c4d362438e9414287250e1354037"
+    },
+    {
+      "path": "app/velaguard/include/velaguard_core.h",
+      "sha256": "a0d1f5c7ea6cc27630a8ff593bb0a76973de5a45ffbd5a428fecbeb00059505a"
+    },
+    {
+      "path": "app/velaguard/include/velaguard_store_file.h",
+      "sha256": "e47b8f55e5f87633c0d8ca67146ed1ead45b2dbac6c8be8450473458ca46319e"
+    },
+    {
+      "path": "app/velaguard/include/velaguard_commands.h",
+      "sha256": "ddb085f86cf90ef41462f1be5b7ef2661343454bcc32740b07f23aad088eafba"
+    },
+    {
+      "path": "app/velaguard/include/velaguard_store.h",
+      "sha256": "51305750996e500ca61ec29f944699b5fa319029f1c1a6db50acf20d1bb1d584"
+    },
+    {
+      "path": "app/velaguard/include/velaguard_runtime.h",
+      "sha256": "7049575bb25c443943a36d90e655be746e99f21fb832106d3e2ecb216b3ee581"
+    },
+    {
+      "path": "app/velaguard/include/velaguard_protocol.h",
+      "sha256": "d8dc5abf21ae5bfdb2d4e702a7deb8276b53ed4a5627d8821a36a01945a01457"
+    }
+  ],
+  "hardware_tested": false
+}

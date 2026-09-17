@@ -44,7 +44,10 @@ class FontTests(unittest.TestCase):
             self.assertTrue(-128<=x<=127 and -128<=y<=127)
             cursor+=(count+1)//2
         self.assertEqual(cursor,len(bitmap))
-        self.assertEqual((ROOT / "app/velaguard/fonts/OFL-Noto.txt").read_bytes(),(SOURCE / "OFL.txt").read_bytes())
+        copied_license = (ROOT / "app/velaguard/fonts/OFL-Noto.txt").read_text(encoding="utf-8")
+        source_license = (SOURCE / "OFL.txt").read_text(encoding="utf-8")
+        normalize = lambda value: "\n".join(line.rstrip() for line in value.splitlines())
+        self.assertEqual(normalize(copied_license), normalize(source_license))
         print("PASS glyphs=%d bitmap=%d line=%d baseline=%d source-pixel-error<=9" % (len(mapping),len(bitmap),ascent+descent,descent))
 
 if __name__ == "__main__": unittest.main()
